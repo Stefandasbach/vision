@@ -1,8 +1,8 @@
 function [left_most, right_most, highest, lowest] = get_corners(image, quadrant)
 % image should be a black and white image where the black pixels are 
 % "far" and white ones are "close"
-    width = 640;
-    height = 480;
+    global width height;
+
     left_most = [width+1, 0];
     right_most = [-1, 0];
 
