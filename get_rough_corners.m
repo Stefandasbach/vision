@@ -1,4 +1,4 @@
-function [left_most, right_most, highest, lowest] = get_corners(image, quadrant)
+function [left_most, right_most, highest, lowest] = get_rough_corners(image)
 % image should be a black and white image where the black pixels are 
 % "far" and white ones are "close"
     width = 640;
@@ -8,10 +8,8 @@ function [left_most, right_most, highest, lowest] = get_corners(image, quadrant)
 
     highest = [0, height+1];
     lowest = [0, -1];
-    
     for x = 1:width
         for y = 1:height
-            if (sqrt((y-
             if(image(y,x) > 0)
                 if(x < left_most(1))
                     left_most = [x, y];
@@ -26,6 +24,7 @@ function [left_most, right_most, highest, lowest] = get_corners(image, quadrant)
                     lowest = [x,y];
                 end
             end
+
         end
     end 
 end
