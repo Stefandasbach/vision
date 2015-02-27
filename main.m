@@ -3,13 +3,12 @@ global width height;
 width = 640;
 height = 480;
 
-depth_array = read_vdi('../a/vdia1');
+depth_array = read_vdi('../a/vdia8');
 depth_image = depth1(depth_array);
-thresholded_on_depth = threshold(depth_image, 0.7);
+thresholded_on_depth = threshold(depth_image, 0.75);
 
-rgb_img = imread('../a/rgba1.png');
-thresholded_on_color = threshold(rgb_img, 0.4);
-
+rgb_img = imread('../a/rgba8.png');
+thresholded_on_color = threshold(rgb_img, 0.5);
 thresholded_on_depth_and_color = img_and(thresholded_on_color, thresholded_on_depth);
 
 imshow(thresholded_on_depth_and_color);
