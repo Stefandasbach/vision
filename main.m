@@ -5,9 +5,12 @@ height = 480;
 
 depth_array = read_vdi('../a/vdia3');
 depth_image = depth1(depth_array);
-filtered_depth_image = threshold(depth_image);
+filtered_depth_image = threshold(depth_image, 0.8);
 
-imshow(filtered_depth_image);
+rgb_img = imread('../a/rgba3.png');
+thresholded_on_color = threshold(rgb_img, 0.4);
+
+imshow(thresholded_on_color)
 
 %%TODO use high threshold for general idea of where block is
 %%then low for more precise
