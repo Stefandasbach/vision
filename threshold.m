@@ -1,4 +1,4 @@
-function thresholded_array = threshold(img)
+function thresholded_array = threshold(img, threshold_level )
 % intensity = sqrt( R*R + G*G + B*B )
 % the single() subroutine is an artifact of how imread() works
     thresholded_array( 480, 640 ) = 0;
@@ -26,7 +26,6 @@ function thresholded_array = threshold(img)
     %plot(thresholded_array(:,320))
     %plot(thresholded_array(240,:))
 
-    threshold_level = 0.9;
     % set everything below threshold to be black
     for x = 1:480
      for y = 1:640

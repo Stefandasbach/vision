@@ -8,7 +8,7 @@ function [left_most, right_most, highest, lowest] = get_corners(image, quadrant)
 
     highest = [0, height+1];
     lowest = [0, -1];
-    max_rectangle_length = 200;
+    max_rectangle_length = 135;
     for x = 1:width
         for y = 1:height
             if (sqrt( (x - quadrant(1))^2 + (y - quadrant(2))^2)  < max_rectangle_length)
