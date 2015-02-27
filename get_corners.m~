@@ -18,14 +18,16 @@ function [left_most, right_most, highest, lowest] = get_corners(image)
                 if(x > right_most(1))
                     right_most = [x, y];
                 end
-                if(y < highest(2))
+                if(y > highest(2))
                     highest = [x, y];
                 end
-                if(y > lowest(2))
+                if(y < lowest(2))
                     lowest = [x,y];
                 end
             end
         end
-    end 
+    end
+    
+    image(left_most(2), left_most(1)) = 
 end
 

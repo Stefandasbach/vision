@@ -26,7 +26,7 @@ function thresholded_array = threshold(img)
     %plot(thresholded_array(:,320))
     %plot(thresholded_array(240,:))
 
-    threshold_level = 0.8;
+    threshold_level = 0.9;
     % set everything below threshold to be black
     for x = 1:480
      for y = 1:640
