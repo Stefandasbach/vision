@@ -1,0 +1,12 @@
+function [ output_args ] = img_and(img1, img2)
+%IMG_AND Summary of this function goes here
+%   Detailed explanation goes here
+    global width height;
+    for x = 1:width
+        for y = 1:height
+            if(img
+        end
+    end
+
+end
+
