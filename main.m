@@ -8,7 +8,7 @@ depth_image = depth1(depth_array);
 filtered_depth_image_high = threshold(depth_image, 0.9);
 filtered_depth_image_low = threshold(depth_image, 0.8);
 
-imshow(filtered_depth_image_high);
+%imshow(filtered_depth_image_high);
 imshow(filtered_depth_image_low);
 
 %%TODO use high threshold for general idea of where block is
