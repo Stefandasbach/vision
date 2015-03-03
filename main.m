@@ -1,35 +1,42 @@
 global width height;
+%angle should be from x-axis to side without x
+%block is about 70px by 250 px
 
 width = 640;
 height = 480;
 
-rgb_img = imread('../a/rgba2.png');
-thresholded_on_color = threshold(rgb_img, 0.4);
+rgb_img = imread('../a/rgba4.png');
 
-depth_array = read_vdi('../a/vdia2');
+
+depth_array = read_vdi('../a/vdia4');
 depth_image = depth1(depth_array);
-filtered_depth_image_high = threshold(depth_image, 0.9);
-filtered_depth_image_low = threshold(depth_image, 0.75);
+filtered_depth_image_high = threshold(depth_image, 0.8);
+depth_thresh = 0.8;
+filtered_depth_image_low = threshold(depth_image, depth_thresh);
 
-%imshow(filtered_depth_image_high);
-imshow(thresholded_on_color);
+%imshow(thresholded_on_color);
 
 %Guess the centroid based on the over-filtered image
 [cx_h, cy_h, num_points] = avg_centroid(filtered_depth_image_high);
 
 %Eliminate points too far away
-filtered_depth_image_low_near_c = ...
-    mask_points_outside_r(filtered_depth_image_low, cx_h, cy_h, 150);
+r = 180;
+depth_far_from_c_masked = ...
+    mask_points_outside_r(depth_image, cx_h, cy_h, r);
+thresholded_on_color = threshold(rgb_img, 0.5);
+color_far_from_c_masked = ...
+    mask_points_outside_r(thresholded_on_color, cx_h, cy_h, r);
 
-%imshow(filtered_depth_image_low_near_c);
 
-thresholded_on_depth_and_color = img_and(thresholded_on_color,...
-    filtered_depth_image_low_near_c);
+imshow(color_far_from_c_masked);
 
-imshow(thresholded_on_depth_and_color);
+thresholded_on_depth_and_color = combine_color_depth(color_far_from_c_masked,...
+    depth_far_from_c_masked, depth_thresh);
+
+%imshow(thresholded_on_depth_and_color);
 
 [left_most, right_most, highest, lowest] = ...
-    get_corners(filtered_depth_image_low, [cx, cy])
+    get_corners(filtered_depth_image_low, [cx, cy]);
 
 
 
