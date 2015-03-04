@@ -1,39 +1,74 @@
-global width height;
+global width height block_w block_h image_for_opt;
+%angle should be from x-axis to side without x
+%block is about 70 bt 250 px
 
 width = 640;
 height = 480;
 
-depth_array = read_vdi('../a/vdia8');
+block_w = 250;
+block_h = 70;
+
+rgb_img = imread('../a/rgba1.png');
+
+
+depth_array = read_vdi('../a/vdia1');
 depth_image = depth1(depth_array);
-thresholded_on_depth = threshold(depth_image, 0.8);
+filtered_depth_image_high = threshold(depth_image, 0.8);
+depth_thresh = 0.8;
+filtered_depth_image_low = threshold(depth_image, depth_thresh);
 
-rgb_img = imread('../a/rgba2.png');
-thresholded_on_color = threshold(rgb_img, 0.55);
-
-depth_array = read_vdi('../a/vdia2');
-depth_image = depth1(depth_array);
-filtered_depth_image_high = threshold(depth_image, 0.9);
-filtered_depth_image_low = threshold(depth_image, 0.8);
-
-%imshow(filtered_depth_image_high);
-imshow(thresholded_on_color);
+%imshow(thresholded_on_color);
 
 %Guess the centroid based on the over-filtered image
 [cx_h, cy_h, num_points] = avg_centroid(filtered_depth_image_high);
 
 %Eliminate points too far away
-filtered_depth_image_low_near_c = ...
-    mask_points_outside_r(filtered_depth_image_low, cx_h, cy_h, 150);
+r = 180;
+depth_far_from_c_masked = ...
+    mask_points_outside_r(depth_image, cx_h, cy_h, r);
+thresholded_on_color = threshold(rgb_img, 0.4);
+color_far_from_c_masked = ...
+    mask_points_outside_r(thresholded_on_color, cx_h, cy_h, r);
 
-%imshow(filtered_depth_image_low_near_c);
 
-thresholded_on_depth_and_color = img_and(thresholded_on_color,...
-    filtered_depth_image_low_near_c);
+color_far_from_c_masked_bw = make_bw
+imshow(color_far_from_c_masked);
 
-imshow(thresholded_on_depth_and_color);
+% We want to move a rectangle around and maximize the sum of the
+% intensitities of pixels within the rectangle
+options = optimset('Display','iter','MaxFunEvals',1000000,'Algorithm','sqp');
+%Initial guess is horizontal, with the
+p0 = [cx_h, cy_h, pi];
+lb = [block_w/4, block_h/4, -pi];
+ub = [width - block_w/4, height - block_h/4, pi];
+image_for_opt = color_far_from_c_masked;
+nonlin_cons = @(x) [0, 0];
+[opt_pos,fval,exitflag] = fmincon(@criterion,p0,[],[],[],[],lb,ub);%nonlin_cons,options);
+best_pos = opt_pos;
+best_fval = fval;
+for i = 1:20
+   p0(1) = p0(1) - 10 + 20*rand(1);
+   p0(2) = p0(2) - 10 + 20*rand(1);
+   p0(3) = -pi + 2*pi*rand(1);
+   [opt_pos,fval,exitflag] = fmincon(@criterion,p0,[],[],[],[],lb,ub);
+   opt_pos
+   if(fval < best_fval)
+       best_fval = fval;
+       best_pos = opt_pos;
+   end
+end
 
-[left_most, right_most, highest, lowest] = ...
-    get_corners(filtered_depth_image_low, [cx, cy])
+best_fval
+best_pos
+
+% 
+% thresholded_on_depth_and_color = combine_color_depth(color_far_from_c_mas ked,...
+%     depth_far_from_c_masked, depth_thresh);
+% 
+% %imshow(thresholded_on_depth_and_color);
+% 
+% [left_most, right_most, highest, lowest] = ...
+%     get_corners(filtered_depth_image_low, [cx, cy]);
 
 
 
