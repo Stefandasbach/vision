@@ -10,6 +10,8 @@ block_h = 70;
 
 rgb_img = imread('../a/rgba1.png');
 
+greenness_img = get_greenness(rgb_img);
+imshow(greenness_img);
 
 depth_array = read_vdi('../a/vdia1');
 depth_image = depth1(depth_array);
@@ -34,13 +36,13 @@ color_far_from_c_masked = ...
 
 
 color_far_from_c_masked_bw = make_bw(color_far_from_c_masked);
-imshow(color_far_from_c_masked_bw);
+%imshow(color_far_from_c_masked_bw);
 
 % We want to move a rectangle around and maximize the sum of the
 % intensitities of pixels within the rectangle
 options = optimset('Display','iter','MaxFunEvals',1000000,'Algorithm','sqp');
 %Initial guess is horizontal, with the
-p0 = [cx_h, cy_h, pi];
+p0 = [cx_h, cy_h, 0];
 lb = [block_h/2, block_h/2, -pi];
 ub = [width - block_h/2, height - block_h/2, pi];
 image_for_opt = color_far_from_c_masked_bw;
