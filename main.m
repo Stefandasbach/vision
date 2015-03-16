@@ -73,6 +73,24 @@ x_radius = 50;
 x_x
 x_y
 
+%only possible cases, there are three orientations of the block
+%ignoring the x position, when we take x into account
+%only some cases do we have to add pi radians.
+if(cx_h < x_x),
+  % add pi 
+  best_pos(3) = best_pos(3) + pi;
+elseif(cy_h > x_y),
+  % add pi
+  best_pos(3) = best_pos(3) + pi;
+end
+
+%normalize position
+if(best_pos(3) > pi)
+  best_pos(3) - 2*pi; 
+elseif(best_pos(3)<-pi)
+  best_pos(3) + 2*pi;
+end
+
 % 
 % thresholded_on_depth_and_color = combine_color_depth(color_far_from_c_mas ked,...
 %     depth_far_from_c_masked, depth_thresh);
