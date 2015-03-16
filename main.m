@@ -8,12 +8,12 @@ height = 480;
 block_w = 250;
 block_h = 70;
 
-rgb_img = imread('../a/rgba1.png');
+rgb_img = imread('../a/rgba4.png');
 
 greenness_img = get_greenness(rgb_img);
-imshow(greenness_img);
+%imshow(greenness_img);
 
-depth_array = read_vdi('../a/vdia1');
+depth_array = read_vdi('../a/vdia4');
 depth_image = depth1(depth_array);
 filtered_depth_image_high = threshold(depth_image, 0.9);
 depth_thresh = 0.8;
@@ -36,7 +36,7 @@ color_far_from_c_masked = ...
 
 
 color_far_from_c_masked_bw = make_bw(color_far_from_c_masked);
-%imshow(color_far_from_c_masked_bw);
+imshow(color_far_from_c_masked_bw);
 
 % We want to move a rectangle around and maximize the sum of the
 % intensitities of pixels within the rectangle
@@ -52,10 +52,10 @@ best_pos = opt_pos;
 best_fval = fval;
 for i = 1:30
    max_jump = 20;
-   p0(1) = p0(1) - max_jump + 2*max_jump*rand(1);
-   p0(2) = p0(2) - max_jump + 2*max_jump*rand(1);
-   p0(3) = -pi + 2*pi*rand(1);
-   [opt_pos,fval,exitflag] = fmincon(@criterion,p0,[],[],[],[],lb,ub);
+   p(1) = p0(1) - max_jump + 2*max_jump*rand(1);
+   p(2) = p0(2) - max_jump + 2*max_jump*rand(1);
+   p(3) = -pi + 2*pi*rand(1);
+   [opt_pos,fval,exitflag] = fmincon(@criterion,p,[],[],[],[],lb,ub);
    opt_pos
    if(fval < best_fval)
        best_fval = fval;
