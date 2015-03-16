@@ -1,0 +1,13 @@
+function [x, y] = find_x(greenness_array, block_x, block_y, block_theta, radius)
+%x and y are the estimated position of the x. The two possible places 
+%   the x could be are tested, and the more likely one is returned.
+
+global block_w block_h;
+
+xcx1 = block_x + (block_w/2)*cos(block_theta);
+xcy1 = block_y + (block_h/2)*sin(block_theta);
+
+for x = (xcx1 - radius):(
+
+end
+

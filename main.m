@@ -8,12 +8,12 @@ height = 480;
 block_w = 250;
 block_h = 70;
 
-rgb_img = imread('../a/rgba4.png');
+rgb_img = imread('../a/rgba3.png');
 
 greenness_img = get_greenness(rgb_img);
-%imshow(greenness_img);
+imshow(greenness_img)
 
-depth_array = read_vdi('../a/vdia4');
+depth_array = read_vdi('../a/vdia3');
 depth_image = depth1(depth_array);
 filtered_depth_image_high = threshold(depth_image, 0.9);
 depth_thresh = 0.8;
@@ -65,6 +65,13 @@ end
 
 best_fval
 best_pos
+
+x_radius = 50;
+[x_x, x_y] = find_x(greenness_img, best_pos(1), best_pos(2), ...
+    best_pos(3), x_radius);
+
+x_x
+x_y
 
 % 
 % thresholded_on_depth_and_color = combine_color_depth(color_far_from_c_mas ked,...
